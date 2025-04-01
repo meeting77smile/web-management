@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.meeting_smile.mapper.EmpMapper">
+    <!--基于动态sql来更新员工-->
+    <update id="update">
+        update tlias.emp
+        /*用sql标签将需要更新的字段包裹起来，从而解决mybatis中动态sql的多余逗号问题*/
+        <set>
+        <if test="username != null and username != ''">
+            username = #{username},
+        </if>
+        <if test="password != null and password != ''">
+            password = #{password},
+        </if>
+        <if test="name != null and name != ''">
+            name = #{name},
+        </if>
+       /* gender是short类型, 不可能为空串('')，故不需要判断空串*/
+        <if test="gender != null">
+            gender = #{gender},
+        </if>
+        <if test="image != null and image != ''">
+            image = #{image},
+        </if>
+        <if test="job != null">
+            job = #{job},
+        </if>
+        <if test="entrydate != null">
+            entrydate = #{entrydate},
+        </if>
+        <if test="deptId != null">
+            dept_id = #{deptId},
+        </if>
+        <if test="updateTime != null">
+            update_time = #{updateTime}
+        </if>
+        </set>
+    where id = #{id}
+    </update>
+
+    <!-- 条件分页查询 -->
+    <!-- sql语句的id，需要与mapper接口的方法名保持一直，均为"list"-->
+    <!-- resultType表示单条记录所封装的类型-->
+    <select id="list" resultType="com.meeting_smile.pojo.Emp">
+        select * from emp
+        <where>
+            <if test="name != null and name != ''">
+                name like concat('%',#{name},'%')
+            </if>
+            <if test="gender != null">
+                and gender = #{gender}
+            </if>
+            <if test="begin != null and end != null">
+                and entrydate between #{begin} and #{end}
+            </if>
+        </where>
+        order by update_time desc
+    </select>
+
+    <!--批量删除员工-->
+    <select id="delete">
+        delete from emp where id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+</mapper>

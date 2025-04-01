@@ -1,0 +1,31 @@
+spring:
+  application:
+    name: web-management
+  #数据库连接信息
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/tlias
+    #数据库的用户名和密码
+    username: root
+    password: 2054865827
+  servlet:
+    multipart:
+      #配置单个文件上传的大小限制
+      max-file-size: 10MB
+      #配置单个请求最大大小的限制（单个请求可上传多个文件）
+      max-request-size: 100MB
+#Mybatis设置
+mybatis:
+  configuration:
+    #配置mybatis的日志，指定输出到控制台
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    #开启mybatis的驼峰命名自动映射开关,如a_column会变成aColumn
+    map-underscore-to-camel-case: true
+
+#自定义的阿里云oss配置信息
+aliyun:
+  oss:
+    endpoint: https://oss-cn-hangzhou.aliyuncs.com
+    accessKeyId: LTAI5tMzqNTStLxN6vhBqkUd
+    accessKeySecret: g2PiJAlwS6UDFEp8F2Y49FOBhhOcnx
+    bucketName: web-meeting-smile
